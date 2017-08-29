@@ -1,0 +1,154 @@
+* keys
+| keys                | function                                        | note |
+|---------------------+-------------------------------------------------+------|
+| w                   | copy file name only to clipboard                |      |
+| 0 w                 | copy full path to clipboard                     |      |
+| % l                 | convert filename(s) to lowercase                |      |
+| % u                 | convert filename(s) to uppercase                |      |
+| C                   | copy file(s)                                    |      |
+| D                   | delete marked files                             |      |
+| ~!~                 | shell command on file                           |      |
+| s                   | toggle sorting of current subdir by name/date   |      |
+| f                   | visit current file                              |      |
+| v                   | view current file                               |      |
+| o                   | visit current file in other window              |      |
+| +                   | create a new subdirectory                       |      |
+| ~=~                 | compare file at point with the one at mark      |      |
+| m                   | mark a file or subdirectory for later commands  |      |
+| u                   | unmark a file or all files of a subdirectory    |      |
+| U                   | unmark all marked files                         |      |
+| * .                 | mark files with a given extension               |      |
+| * /                 | mark all directories                            |      |
+| * @                 | mark all symlinks                               |      |
+| * *                 | mark all executables                            |      |
+| * C-n               | move to next marked item                        |      |
+| t                   | invert marking                                  |      |
+| * s                 | mark all files in the current subdir            |      |
+| * %                 | mark file nams matching a regular expression    |      |
+| * c                 | change the marks to a different character       |      |
+| * (                 | mark files for which Elisp expression returns t |      |
+| i                   | insert a subdirectory into this buffer          |      |
+| k                   | remove marked files from the listing            |      |
+| C-u k               | remove a subdir listing                         |      |
+| C-u s               | edit ls switches                                |      |
+| C-_                 | recover marks, hidden lines, and such (undo)    |      |
+| M-$                 | hide all subdirectories                         |      |
+| ~$~                 | hide or unhide subdirectory                     |      |
+| % C                 | copy marked files by regexp                     |      |
+| % R                 | rename marked files by regexp                   |      |
+| % d                 | mark file deletion by regexp                    |      |
+| % H                 | mark hardlink by regexp                         |      |
+| % S                 | makr symlink by regexp                          |      |
+| % Y                 | mark symlink with relative paths                |      |
+| M-x find-name-dired | dired file(s) whose name matches a pattern      |      |
+| M-x find-grep-dired | dired file(s) that contain pattern              |      |
+| M-x find-dired      | dired file(s) based on find output              |      |
+ 
+* open file in external app
+** windows
+#+BEGIN_EXAMPLE
+!
+start ""
+#+END_EXAMPLE
+** mac
+#+BEGIN_EXAMPLE
+!
+open
+#+END_EXAMPLE
+
+* wdired
+- C-x C-q to enter editing mode
+- then edit filename
+- after done, C-c C-c to finalize
+* rename multiple files using regex
+** option 1
+~%r~
+** option 2
+- use C-x d to enter dired and choose the directory with the files in
+- use C-x C-q to turn dired into editing mode. You can then edit the file names by hand or
+- use M-% to replace foo with bar in the dired buffer. This will change the file names
+- use C-c C-c so apply the changes, or C-c ESC to cancel
+source: http://pragmaticemacs.com/emacs/dired-rename-multiple-files/
+** option 3
+use *wdired*
+
+* file size
+We’ve looked a few times at dired, emacs’ powerful file browser. This time I
+want to look at file sizes in dired. By default, dired lists file sizes in
+bytes, but this is easy to change by customising the switches that dired uses
+when it calls your system’s ls command to generate the directory listing.
+
+Add the following to your emacs config file to have file sizes given in
+“human-readable” format (i.e. in units of B, K, M, G as appropriate).
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; dired                                                                  ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(setq dired-listing-switches "-alh")
+
+We already saw that hitting s in a dired window changes the sorting between file
+name and modification date. It is also nice to sort by file size sometimes. To
+do this, we can use the prefix argument in front of the s command, so use C-u s
+in the dired buffer. This prompts us for the ls switches, which we can change
+from -alh to -alhS to sort by size. Xah Lee covers this in more detail in his
+extensive emacs pages.
+* only list directories for a specified directory
+- fist: ~-x find-dired~
+- then: ~-type d -maxdepth 1~
+* Open Dired on marked
+C-M-*
+* Open Dired on files in a fileset
+C-x C-M-f
+* Open Dired on specific files
+M-x diredp-dired-for-files
+* Open Dired on recently used dirs
+C-x R
+* Create union of some Dired buffers
+C-x D
+* Dired each inserted subdir
+M-x diredp-dired-inserted-subdirs
+* mark files
+http://pragmaticemacs.com/emacs/dired-marking-copying-moving-and-deleting-files/
+** mark all files
+*s
+or 
+t (when no file is marked)
+
+** invert the selection
+t
+** mark by regex
+% m test <RET> will mark all files with names containing the string “test” (equivalent to *test* on the command line.
+% m ^test <RET> will mark all files with names starting with the string “test” (equivalent to test* on the command line).
+% m txt$ <RET> will mark all files with names ending with the string “txt” (equivalent to *txt on the command line).
+% m ^test.*org$ <RET> will mark all files with names starting with the string “test” and ending with “org” (equivalent to test*org on the command line).
+% m [kxj] <RET> will mark all files with names containing the letters k, x, or j
+% m [kxj] <RET> will mark all files with names containing the letters k, x, or j
+% m [6-9] <RET> will mark all files with names containing the digits 6,7,8,9
+* execute command on marked files
+- first type ~!~
+- then use ~?~ to represent marked files one at a time
+or use ~*~ to represent all the marked files in one go
+- for the ? case, it can be omitted..
+** example
+for eg, if there are two marked files, then ~!~ followed by:
+#+BEGIN_EXAMPLE
+diff ?
+#+END_EXAMPLE
+
+will complain since the command gets executed is actually:
+#+BEGIN_EXAMPLE
+diff a
+#+END_EXAMPLE
+
+so have to use:
+#+BEGIN_EXAMPLE
+diff *
+#+END_EXAMPLE
+
+then command gets executed becomes:
+#+BEGIN_EXAMPLE
+diff a b
+#+END_EXAMPLE
+* create zip from marked files
+- !
+- zip -r <file.zip> *

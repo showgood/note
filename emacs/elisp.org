@@ -1,0 +1,31 @@
+* save to clipboard(kill ring)
+kill-new
+#+BEGIN_SRC elisp
+(kill-new "hello")
+#+END_SRC
+
+* get the clipboard content
+there are two steps involved:
+** save the clipboard content to kill-ring
+#+BEGIN_SRC elisp
+(yank)
+#+END_SRC
+** get the top of kill-ring
+#+BEGIN_SRC elisp
+(substring-no-properties (current-kill 0))
+#+END_SRC
+substring-no-properties is need to remove the format information.
+
+or 
+#+BEGIN_SRC elisp
+(substring-no-properties (car kill-ring))
+#+END_SRC
+* delete item from list
+for eg, I don't want ffip to exclude the pdf file for searching:
+#+BEGIN_SRC elisp
+(setq ffip-prune-patterns (delete "*.pdf" ffip-prune-patterns))
+#+END_SRC
+* delete the top entry of kill-ring
+#+BEGIN_SRC elisp
+(pop kill-ring)
+#+END_SRC

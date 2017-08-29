@@ -1,0 +1,32 @@
+* pdf-tools
+probably best available for emacs in terms of pdf.
+https://github.com/politza/pdf-tools
+
+it requires some work to make it work on mac, easier on Linux.
+** setup on Mac (for spacemacs)
+first install *zlib* and other dependencies (require homebrew):
+#+BEGIN_SRC bash
+brew install poppler automake
+brew install zlib
+#+END_SRC
+
+next is add *pdf-tools* into the spacemacs layers, then re-load emacs.
+
+then find the pdf-tools package in *.emacs.d*, it would sth like this:
+#+BEGIN_SRC bash
+cd /Users/xyz/.emacs.d/elpa/pdf-tools-20170417.150/build/server
+#+END_SRC
+
+then change *PKG_CONFIG_PATH* since zlib is installed at different location (adjust according to zlib version): 
+#+BEGIN_SRC bash
+export PKG_CONFIG_PATH=/usr/local/Cellar/zlib/1.2.11/lib/pkgconfig:/usr/local/lib/pkgconfig:/opt/X11/lib/pkgconfig
+#+END_SRC
+
+finally build pdf-tools:
+#+BEGIN_SRC bash
+make -s
+#+END_SRC
+
+restart emacs and it should work.
+
+tested on macOS Sierra

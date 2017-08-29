@@ -1,0 +1,4 @@
+* search using spotlight inside emacs
+
+https://github.com/benmaughan/spotlight.el
+http://pragmaticemacs.com/emacs/search-with-os-x-spotlight-from-emacs/

@@ -1,0 +1,259 @@
+* navigation
+jump to a heading in the org file: *SPC j i*
+* settings
+** syntax highlight
+#+BEGIN_SRC elisp
+;; fontify code in code blocks
+(setq org-src-fontify-natively t)
+#+END_SRC
+
+** show images inline
+basically two steps:
+- put *#+STARTUP: inlineimages* at beginning of the org file
+- insert link to the file, but leave the *description empty*!
+
+** set local file varaible
+put something like this at beginning of the org file:
+#+BEGIN_EXAMPLE
+# -*- org-image-actual-width: nil; -*-
+#+END_EXAMPLE
+* GTD
+** org-agenda
+*** org agenda bulk operations
+| keys | operation                     |
+|------+-------------------------------|
+| m    | mark one entry                |
+| *    | mark all entries              |
+| u    | unmark one entry              |
+| U    | unmark all entries            |
+| B    | bulk operation(after marking) |
+*** display exact time for appointment/meeting
+sometimes org agenda doesn't dispaly some of my appointment/meeting properly:
+
+#+BEGIN_EXAMPLE
+Calendar:   Scheduled:  lunch with brother :APPOINTMENT:
+#+END_EXAMPLE
+
+although I already set the schedule time like this:
+
+#+BEGIN_EXAMPLE
+SCHEDULED: <2016-03-03 Thu 12pm>
+#+END_EXAMPLE
+
+later finally find out the scheduled time has to set like this:
+#+BEGIN_EXAMPLE
+SCHEDULED: <2016-03-03 Thu 12:00pm>
+#+END_EXAMPLE
+
+then it works, would display as:
+#+BEGIN_EXAMPLE
+Calendar:   12:00...... Scheduled:  lunch with brother :APPOINTMENT:
+#+END_EXAMPLE
+** rotate todo status
+C-c C-t
+
+** bulk archive
+https://stackoverflow.com/questions/6997387/how-to-archive-all-the-done-tasks-using-a-single-command
+
+http://orgmode.org/manual/Agenda-commands.html#Agenda-commands
+
+If you call Org-Agenda from within the buffer you want to archive you can
+temporarily restrict it to only that buffer and view only todo entries and
+filter for only DONE
+
+steps:
+- C-c a < t
+- N r
+Where N corresponds to the shortcut for your DONE state (with default states it
+would be 2)
+- Then you'd simply need to mark all the desired headlines and bulk archive
+- m (mark for bulk action)
+- B $
+
+* add tag
+C-c C-q
+NOTE: tag can not has -, but can have _.
+ie. no-return is not valid tag. but no_return is.
+otherwise search by tag won't work
+* superscript / subscript
+^ is used for superscript
+_ is used for subscript
+* footnote
+| commands  | description             |
+|-----------+-------------------------|
+| C-c C-x f | insert/re-number        |
+| C-c C-c   | jump to definition/back |
+
+seems like the footnote can't start as first thing in a line,
+there should be some thing before it. [fn:2]
+* drag drop image easily into org mode file
+use the plugin org-download:
+https://github.com/abo-abo/org-download
+* table
+** create table
+select the lines (field can be separated with space or comma), then type:
+C-c |
+** formula
+*** get table field info
+put cursor on the field, then press ~C-c ?~
+*** table level formula
+C-c =
+*** field formula
+type formula in that field.
+for example:
+:=vsum(C2..C10)
+
+will sum the column 5 from row 2 (row 1 is header) to row 10
+
+*** run formula through whole table:
+put cursor at formula line, then:
+C-c C-c 
+** reference
+http://orgmode.org/worg/org-tutorials/org-spreadsheet-intro.html
+** keys
+#+ATTR_HTML:   :border 2 :rules all :frame border
+| keys         | purpose                      | note                  |
+|--------------+------------------------------+-----------------------|
+| Tab          | move to next cell            |                       |
+| S-Tab        | move to previous cell        |                       |
+| M-S-left     | delete column                |                       |
+| M-S-right    | add column                   |                       |
+| M-S-up       | delete row                   |                       |
+| M-S-down     | add row                      |                       |
+| M-left/right | move column to left/right    |                       |
+| M-up/down    | move row to up/down          |                       |
+| C-c -        | add separator row            |                       |
+| S-RET        | copy content from cell above |                       |
+| C-c <SPC>    | clear the cell content       | org-table-blank-field |
+
+* export
+** prettyify table export
+to prettify the exported table in HTML,Put this right above the table:
+
+#+BEGIN_SRC org
+#+ATTR_HTML:   :border 2 :rules all :frame border
+#+END_SRC
+*** set the html export attribute for all tables in the org mode file
+set *org-html-table-default-attributes* as below: [fn:1]
+#+BEGIN_SRC elisp
+(setq org-html-table-default-attributes '(:border "2" :rules "all" :frame "border"))
+#+END_SRC
+
+** export the properties of headlines
+#+BEGIN_SRC elisep
+(setq org-export-with-properties t)
+#+END_SRC
+** escape the superscript/ subscript during html export
+\_ no longer works..
+has to use = to surround the string, something like: ~=no_subscript=~
+** disable emacs convert underscore(_) to subscript during export
+put this in the beginning of org file:
+#+BEGIN_SRC org
+#+OPTIONS: ^:nil
+#+END_SRC
+** only export certain subtree
+- C-c C-e
+- C-s to change the export scope (buffer or subtree)
+rest is same
+** resize image for export
+use *#+attr_html: :width 100px* 
+http://orgmode.org/worg/org-8.0.html#sec-8-3
+#+BEGIN_SRC org
+#+attr_html: :width 100px
+[[~/images/example.jpg]]
+#+END_SRC
+* org-babel
+** evaluate source code block
+need to enable org-babel to support corresponding language first.
+add this to dotfile:
+
+#+BEGIN_SRC emacs-lisp
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '( (perl . t)         
+      (ruby . t)
+      (sh . t)
+      (python . t)
+      (dot . t)
+      (emacs-lisp . t)   
+      ))
+#+END_SRC
+
+then put cursor somewhere inside source block, then press:
+C-c C-c
+
+** pass flag to c++ compiler
+:flags "-std=c++0x"
+** org babel can't evaluate the code block
+sometimes would see this error when evaluate the code block even when that
+*org-babel-load-languages* has been setup properly:
+#+BEGIN_EXAMPLE
+Evaluation of this python code-blockis disabled.
+#+END_EXAMPLE
+
+turned out one solution is to delete the *elc* file related to org mode:
+#+BEGIN_SRC bash
+cd ~/.emacs.d/elpa/org-plus-contrib-20170502
+rm *.elc
+#+END_SRC
+
+after that, need to recompile the directory (in spacemacs, press 0 in normal mode will give C-u 0):
+#+BEGIN_EXAMPLE
+C-u 0 M-x byte-recompile-directory
+#+END_EXAMPLE
+
+source: https://emacs.stackexchange.com/questions/28441/org-mode-9-unable-to-eval-code-blocks
+** scheme code block
+seems not possible, at least not easily to use mit-scheme to run code.
+since ob-scheme use Geiser which only supports guile and racket.
+
+otherwise could do this:
+#+BEGIN_SRC elisp
+(setq geiser-default-implementation 'guile)
+#+END_SRC
+* time tracking
+** keys
+| keys      | description                          |
+|-----------+--------------------------------------|
+| F2        | go to active timer                   |
+| F3        | start timer                          |
+| F4        | stop timer                           |
+| C-c C-x r | add time block table for the subtree |
+** show where time spent for yesterday
+put this at beginning of the org file:
+#+BEGIN_SRC org
+#+BEGIN: clocktable :maxlevel 4 :emphasize nil :scope file :block yesterday
+#+END: clocktable
+#+END_SRC
+
+** reference
+http://orgmode.org/manual/The-clock-table.html#index-clocktable_002c-dynamic-block-926
+http://irreal.org/blog/?p=5323
+
+* image
+** scale the inline image in org mode
+- first set this either in init file or org file:
+#+BEGIN_SRC elisp
+(setq org-image-actual-width nil)
+#+END_SRC
+
+- second add this property upon image link:
+#+BEGIN_EXAMPLE
+#+NAME: fig:figure name
+#+CAPTION: figure name
+#+ATTR_ORG: :width 200/250/300/400/500/600
+#+ATTR_LATEX: :width 2.0in
+#+ATTR_HTML: :width 200/250/300/400/500/600px
+#+END_EXAMPLE
+
+source: https://emacs.stackexchange.com/questions/26363/downscaling-inline-images-in-org-mode
+* org publish
+** force to re-generate all files even files have not changed
+basically can use use a *prefix argument* to achieve it.
+in spacemacs under evil mode, press 1, then followed by *M-x org-publish* would work.
+
+reference: https://stackoverflow.com/questions/21258769/using-emacs-org-mode-how-to-publish-the-unchanged-files-in-a-project
+* Footnotes
+
+[fn:2] http://orgmode.org/manual/Footnotes.html
+[fn:1] http://orgmode.org/manual/Tables-in-HTML-export.html#Tables-in-HTML-export

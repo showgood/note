@@ -1,0 +1,20 @@
+* keys
+| keys    | function             | operation                                                            | NOTE          |
+|---------+----------------------+----------------------------------------------------------------------+---------------|
+| C-x v d |                      | show repository status buffer                                        |               |
+| i       |                      | register file(eg, svn add or git add)                                |               |
+| +       | vc-update            | make an update (like git pull)                                       |               |
+| ~=~     | vc-diff              | for the file under the cursor                                        |               |
+| v       | vc-next-action       | perform the next logical control operation on file                   |               |
+| ?       | help                 |                                                                      |               |
+| S       |                      | searches the marked files                                            |               |
+| Q       |                      | does a query replace on the marked files                             |               |
+| C-x v c | vc-rollback          | roll back the most recent changeset                                  |               |
+| C-x v u | vc-revert-buffer     |                                                                      |               |
+| C-x v g | vc-annotate          | *blame*. Show when each line in a tracked file was added and by whom |               |
+| C-s v l |                      | Displays a log of previous changes to the file                       |               |
+|         | vc-resolve-conflicts | Pop up an ediff-merge session on a file with conflict markers        |               |
+| x       |                      | hide up-to-date and unregistered file                                | customization |
+| E       |                      | Ediff                                                                | customization |
+
+* magit

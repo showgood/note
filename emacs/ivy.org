@@ -1,0 +1,72 @@
+* tramp(for spacemacs)
+- <SPC> f f
+- input tramp url
+- C-Alt-j
+* choose action on single selection
+M-o
+
+for eg, find a file with certain pattern then open it in a 
+vertical split window
+
+* Saving the current completion session to a buffer
+C-c C-o
+
+* enter hydra in minibuffer
+after minibuffer is shown, then:
+C-o
+
+* search replace project wise
+first use either:
+- counsel-ag (C-k)
+- counsel-git-grep (C-j)
+to find the pattern to be replaced, then
+save that result into buffer with:
+C-c C-o (or C-o o)
+
+then in that occur buffer, use:
+%s/pattern/newString/g
+
+to do result. if happen, then :
+C-c C-c to apply,
+otherwise *C-c C-k* to cancel.
+
+reference: https://sam217pa.github.io/2016/09/11/nuclear-power-editing-via-ivy-and-ag/
+
+* open file quickly with ivy
+| scenario             | key       | function                     |
+|----------------------+-----------+------------------------------|
+| a projectile project | <SPC> p f | counsel-projectile-find-file |
+| git repo             | C-x f     | counsel-git                  |
+| other                | <SPC> f f | counsel-find-file            |
+* traverse ivy command history
+M-n   next command in the history
+M-p   previous command in the history
+C-r   search through ivy command history
+
+* insert current candidate into minibuffer
+M-i
+
+* insert current word(under cursor) into minibuffer
+M-j
+
+* copy selected candidates to kill ring
+M-w (ivy-kill-ring-save)
+
+* swiper then grep
+M-x counsel-grep-or-swiper
+
+for large file, fall back to grep
+* counsel occur buffer tips
+jump to the matching line without losing focus: o
+
+ie. focus is still inside the occur buffer, not change to
+the buffer where matching is. if just press enter, you will
+lose the focus.
+* provide extra argument for counsel-ag
+add prefix argument (SPC-u) before invoking *counsel-ag*.
+* bound key to exit mini-buffer
+https://github.com/abo-abo/swiper/issues/762
+#+begin_src emacs-lisp :tangle yes
+(eval-after-load "ivy" '(define-key ivy-minibuffer-map 
+    (kbd "<f1>") 'minibuffer-keyboard-quit))
+#+end_src

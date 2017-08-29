@@ -1,0 +1,37 @@
+* todo
+https://github.com/alphapapa/org-protocol-capture-html
+
+* paperless
+https://github.com/atgreen/paperless
+| key   | description                  |
+|-------+------------------------------|
+| SPC   | open PDF preview             |
+| -/+/= | adjust scale of PDF preview  |
+| r     | rename the file              |
+| f     | select destination directory |
+| x     | actually perform the change  |
+
+* surround
+** normal mode
+| key                   | description                                                |
+|-----------------------+------------------------------------------------------------|
+| ds <text obj> <char>  | delete a surrounding                                       |
+| ds <text obj> t <tag> | delete a surrounding tag                                   |
+| cs <text obj> <char>  | change a surrounding                                       |
+| cs <text obj> t <tag> | change a surrounding tag                                   |
+| ys <text obj> <char>  | add a surrounding                                          |
+| ys <text obj> t <tag> | add a surrounding tag                                      |
+| yS <text obj> <char>  | add a surrounding and place surrounded text on new line    |
+| yss <char>            | add surrounding to the whole line                          |
+| yss t <tag>           | add surrounding tag to the whole line                      |
+| ySS <char>            | add surrounding to the whole line and place it on new line |
+
+** visual mode
+| key      | description                                                        |
+|----------+--------------------------------------------------------------------|
+| s <char> | add a surrounding to the visual selection                          |
+| s t <tag> | add a surrounding to the visual selection                          |
+| S <char> | add a surrounding to the visual selection and place it on new line |
+
+** reference
+http://www.catonmat.net/blog/vim-plugins-surround-vim/

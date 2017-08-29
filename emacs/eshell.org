@@ -1,0 +1,80 @@
+* addpath PATH
+Adds the argument, which must be a path, to the $PATH environment variable. If
+no argument is specified the existing paths are pretty-printed to the screen.
+
+* unset ENV-VAR
+Unsets an existing environment variable
+
+* open file
+find-file FILE
+
+* change environment variable
+export won't work, need to use setenv
+
+#+BEGIN_SRC elisp 
+(setenv "PYTHONPATH" "c:/workarea/pylib")
+#+END_SRC
+
+* argument predicates
+eshell-display-predicate-help or eshell-display-modifier-help
+
+* open dired 
+dired DIRECTORY
+Opens a dired buffer in DIRECTORY.
+
+* vc-dir
+vc-dir DIRECTORY
+Reports the status of a version controlled directory (equivalent to the status command in most VCS)
+
+* diff files
+ediff-files FILE1 FILE2
+Diffs FILE1 and FILE2 using ediff, Emacs’ diff engine.
+
+* keys
+C-c M-b
+Inserts the printed buffer name at point
+C-c M-i
+Inserts the printed process name at point
+C-c M-v
+Inserts an environment variable name at point
+C-c M-d
+Toggles between direct input and delayed input (send on RET).
+
+* redirection
+> #<buffer buffer_name>
+>> #<buffer buffer_name>
+>>> #<buffer buffer_name>
+
+redirect the content of abc to *scratch* buffer:
+#+BEGIN_SRC bash
+cat abc >> #<buffer *scratch*>
+#+END_SRC
+
+* device
+To Pseudo-Devices
+Eshell reimplements the following pseudo-devices:
+/dev/eshell
+Prints the output interactively to Eshell.
+/dev/null
+Sends the output to the NULL device.
+/dev/clip
+Sends the output to the clipboard.
+/dev/kill
+Sends the output to the kill ring.
+
+* zsh style glob
+ls **/*.cpp
+
+* for loop
+source: https://www.masteringemacs.org/article/complete-guide-mastering-eshell
+
+for f in web1 web2 { scp info.php $f:/var/www/html/oscmax/catalog }
+  for f in {ls -1d *} {echo $f; svn up $f}
+  for f in {find . -name '*.java'} {mv $f (replace-regexp-in-string "\\.java$" ".scala" f)}
+  # Those parens may also be curly braces. Paren for lisp, curly for subshell.
+  # See how $f is used in curly brace but f is used in parens
+  for f in db1 db2 {mysqldump -d -uuser -ppwd (concat "prefix_" f "_suffix") >(concat "/tmp/backup_" f ".sql")}
+
+* to read
+https://www.emacswiki.org/emacs/CategoryEshell
+ 

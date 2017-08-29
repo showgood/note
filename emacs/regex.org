@@ -1,0 +1,74 @@
+* basics of emacs regex
+* useful packages
+https://github.com/benma/visual-regexp.el
+https://github.com/benma/visual-regexp-steroids.el/
+
+* special symbols
+| symbol  | meaning           |
+|---------+-------------------|
+| ~\&~    | the matching text |
+| ~\,~    |                   |
+| ~\#&~   |                   |
+| ~\0~    |                   |
+| ~incf~  |                   |
+| ~count~ |                   |
+* steps
+- query-replace-regexp (C-M-%)
+- type pattern to be replaced
+- type target text
+- confirm replace
+* confirmation buffer
+| keys | description                                                                       |
+|------+-----------------------------------------------------------------------------------|
+| C-r  | enter recursive edit                                                              |
+| C-w  | delete match and recursive edit                                                   |
+| C-l  | clear the screen, redisplay, and offer same replacement again                     |
+| ~!~  | replace all remaining matches in this buffer with no more questions               |
+| ~^~  | move point back to previous match                                                 |
+| ~E~  | edit the replacement string                                                       |
+| ~Y~  | replace all in all buffers multi-buffer replacements                              |
+| ~N~  | skip to the next buffer without replacing remaining matches in the current buffer |
+
+* examples
+** replace lines starts with b with line and TEST
+- query-replace-regexp (C-M-%)
+- type pattern to be replaced: ~^b.*~
+- type target text: ~\& TEST~
+
+so if line is: ~bug~, it will become ~bug TEST~
+** increment all numbers
+#+BEGIN_EXAMPLE
+[0-9]+ -> \,(1+ \#&).
+#+END_EXAMPLE
+** complicated one
+*** source
+TEST_124: [camelCase, anotherOne],
+*** target
+"TEST_124": ["CAMEL_CASE", "ANOTHER_ONE"],
+*** how to do it
+first add this function:
+#+BEGIN_SRC elisp
+(defun split-name (s)
+  (split-string
+   (let ((case-fold-search nil))
+     (downcase
+      (replace-regexp-in-string "\\([a-z]\\)\\([A-Z]\\)" "\\1 \\2" s)))
+   "[^A-Za-z0-9]+"))
+(defun underscore-string (s) (mapconcat 'downcase   (split-name s) "_"))
+#+END_SRC
+
+then with evil-mode, can be achieved with this command:
+#+BEGIN_EXAMPLE
+%s/\(\w+\)\(_\w+\)*/"\,(upcase (underscore-string \0))"/g
+#+END_EXAMPLE
+** TODO look-ahead and look-behind
+** another one
+#+BEGIN_EXAMPLE
+ABC_0  ==> ABC_1
+DEF_0  ==> DEF_2
+ABC_0  ==> ABC_3
+#+END_EXAMPLE
+
+#+BEGIN_SRC elsip
+\(\w+_\)0  --> \1_\,(incf count)
+#+END_SRC

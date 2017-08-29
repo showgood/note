@@ -1,0 +1,244 @@
+* prefix argument
+in spacemacs, it's ~SPC-u~
+* settings
+| setting                   | better | note                                   |
+|---------------------------+--------+----------------------------------------|
+| delete-by-moving-to-trash | nil    | avoid dired deleted file goes to trash |
+| global-linum-mode         | nil    | avoid too slow for big files           |
+* toggles
+| keys      | function                    | NOTE                       |
+|-----------+-----------------------------+----------------------------|
+| ~SPC t n~ | toggle line number          |                            |
+| ~SPC t r~ | toggle relative line number | need to do ~SPC t n~ first |
+* bookmark
+| keys    | function                       | note        |
+|---------+--------------------------------+-------------|
+| C-x r m | bookmark directory/file        |             |
+| SPC f b | jump to bookmark               |             |
+| C-x r b | jump to bookmark               |             |
+| C-x r l | bookmarks buffer               |             |
+| M-b     | bookmark marked files in dired | need Dired+ |
+* copy/paste
+| keys    | function                        | note                                     |
+|---------+---------------------------------+------------------------------------------|
+| SPC b Y | copy whole buffer to clipboard  | spacemacs/copy-whole-buffer-to-clipboard |
+| SPC b P | paste clipboard to whole buffer | spacemacs/copy-clipboard-to-whole-buffer |
+| C-x y   | same as above                   |                                          |
+| C-x h   | select whole buffer             |                                          |
+* navigation
+| keys    | function                     | note              |
+|---------+------------------------------+-------------------|
+| SPC j l | jump to line                 |                   |
+| SPC j J | jump to char                 |                   |
+| SPC j j | jump to 2 chars              | my customization  |
+| SPC j w | jump to word                 |                   |
+| SPC `   | jump back                    |                   |
+| C-x [   | page up                      |                   |
+| C-x ]   | page down                    |                   |
+| C-b     | left                         | emacs native mode |
+| C-f     | right                        | emacs native mode |
+| C-n     | next line                    | emacs native mode |
+| C-p     | up line                      | emacs native mode |
+| SPC s j | jump to functions definition |                   |
+
+* window/layout
+| keys             | function                          | note              |
+|------------------+-----------------------------------+-------------------|
+| C-c <left arrow> | go back to previous window layout |                   |
+| SPC w D          | delete window                     | ace-delete-window |
+| SPC w W          | switch window                     | ace-window        |
+| SPC w d          | close current window              |                   |
+| SPC w R          | swap two windows                  |                   |
+| SPC w m          | maximize current window           |                   |
+| C-x 1            | maximize current window           |                   |
+| SPC w .          | window microstate                 |                   |
+| SPC l l          | switch layout with ivy            |                   |
+| SPC <0-9>        | switch to window #n               |                   |
+
+* file
+| keys    | function                                 | note             |
+|---------+------------------------------------------+------------------|
+| SPC f d | delete current file                      | my customization |
+| SPC f R | rename current file                      | my customization |
+| SPC f c | copy current file                        | my customization |
+| SPC f p | copy current file full path to clipboard | my customization |
+| SPC f n | copy current filename to clipboard       | my customization |
+| SPC f f | open file                                |                  |
+| SPC f j | open dired                               |                  |
+| SPC f R | recent file                              |                  |
+* edit
+| keys                           | function                                                         | note                      |
+|--------------------------------+------------------------------------------------------------------+---------------------------|
+| C-x C-q                        | read only mode                                                   |                           |
+| C-x C-t                        | swap two lines                                                   |                           |
+| SPC x t l                      | swap two lines                                                   |                           |
+| M-SPC                          | compress space to 1(starts cursor)                               |                           |
+| M-\                            | delete all spaces starts cursor                                  |                           |
+| C-x C-o                        | delete blank lines                                               | [[delete blank line]]         |
+| M-x delete-maching-lines       | delete lines match regex                                         |                           |
+| M-x delete-trailing-whitespace | delete trailing spaces for whole buffer                          |                           |
+| M-x untabify                   | replace all tabs with space                                      | tab-width variable        |
+| M-x delete-duplicate-lines     | delete duplicate lines                                           | [[delete duplicate line]]     |
+| C-q C-i                        | insert literal tab                                               |                           |
+| C-q C-j                        | insert literal newline                                           |                           |
+| gx {motion}                    | exchange the entity defined by motion(ie, w, e etc, in vim term) | provided by evil-exchange |
+| ~u~                            | undo                                                             | evil-mode                 |
+| C-r                            | redo                                                             | undo-tree required        |
+
+* project 
+| keys  | function                         | note |
+|-------+----------------------------------+------|
+| SPC / | search project                   |      |
+| SPC * | search project with current word |      |
+
+* other
+| keys                   | function                              | note |
+|------------------------+---------------------------------------+------|
+| erase-buffer           | clear ansi-term buffer content        |      |
+| C-l                    | make current line in center of screen |      |
+| M-x quick-calc         | quick calculator                      |      |
+| M-x display-time-world | display world clock                   |      |
+| M-x artist-mode        | draw ascii art                        |      |
+| M-x ielm               | evaluate elisp                        |      |
+
+* delete blank line
+- if current line is blank line, it will not be deleted, but all the
+  previous/later blank lines will all be deleted
+- if current line is not blank line, then only later blank lines will be deleted
+
+* delete duplicate line
+deletes the first duplicate line it encounters, starting from the top.
+NOTE: lines don't have to be sorted
+
+* increment/decrement number on a line
+(global-set-key (kbd "\C-c +") 'evil-numbers/inc-at-pt); mimic C-a in vim
+(global-set-key (kbd "\C-c -") 'evil-numbers/dec-at-pt); mimic C-x in vim
+
+C-c + and C-c - conflict with org-mode keybindings..
+* help
+| keys      | function         | note                                       |
+|-----------+------------------+--------------------------------------------|
+| C-u C-h i | open a info file | can be done in code: (info "path_to_file") |
+|           |                  |                                            |
+** C-h r (open manual)
+** g (go to node)
+** C-h i
+* version control
+| keys                | function                       | note      |
+|---------------------+--------------------------------+-----------|
+| C-x v d             | get into VC buffer             |           |
+| n                   | next line                      |           |
+| p                   | previous line                  |           |
+| G                   | ignore file                    |           |
+| x                   | only show changed files        |           |
+| m                   | mark                           |           |
+| u                   | unmark                         |           |
+| M                   | mark all                       |           |
+| U                   | unmark all                     |           |
+| v                   | check in                       |           |
+| g                   | refresh                        |           |
+| =                   | diff with base using ediff     |           |
+| i                   | register file to VC            |           |
+| l                   | show log                       |           |
+| ~                   | retrieve old revision          |           |
+| C-x v u             | revert local change            |           |
+| M-x svn-status-info | show repo url for working copy | need psvn |
+* Ediff
+| keys | function                                                                 | note |
+|------+--------------------------------------------------------------------------+------|
+| n    | move to next difference                                                  |      |
+| p    | move to previous difference                                              |      |
+| a    | Copy the version of the current difference found in buffer A to buffer B |      |
+| b    | Copy the version of the current difference found in buffer B to buffer A |      |
+| ra   | restore difference in buffer A                                           |      |
+| rb   | restore difference in buffer B                                           |      |
+| g a  | recenter comparsion buffer                                               |      |
+| g b  | recenter comparsion buffer                                               |      |
+| !    | recalculate differences                                                  |      |
+| w a  | save buffer A to disk                                                    |      |
+| w b  | save buffer B to disk                                                    |      |
+| E    | open ediff documentation                                                 |      |
+| z    | suspend ediff session                                                    |      |
+| q    | quit ediff                                                               |      |
+
+* shell mode
+| keys            | function                                  | note |
+|-----------------+-------------------------------------------+------|
+| M-p             | previous command                          |      |
+| M-n             | next command                              |      |
+| C-c C-o         | clear the output of last command          |      |
+| C-c C-r         | move to first line of last command output |      |
+| C-c C-e         | move to last line of last command output  |      |
+| C-c C-p         | move to previous output group             |      |
+| C-c C-n         | move to next output group                 |      |
+| rename-uniquely | rename the shell buffer                   |      |
+
+** settings
+*** set to use zsh
+(setq shell-file-name "/bin/zsh")
+*** hide of password typing
+(add-hook 'comint-output-filter-functions
+   'comint-watch-for-password-prompt)
+* calendar
+** diary
+| keys                    | function                                                             | note |
+|-------------------------+----------------------------------------------------------------------+------|
+| d                       | Display all diary entries for the selected date (diary-view-entries) |      |
+| s                       | Display the entire diary file (diary-show-all-entries)               |      |
+| m                       | Mark all visible dates that have diary entries (diary-mark-entries). |      |
+| u                       | Unmark the calendar window (calendar-unmark).                        |      |
+| M-x diary-print-entries | Print hard copy of the diary display as it appears.                  |      |
+
+M-x diary
+Display all diary entries for today’s date.
+
+M-x diary-mail-entries
+Mail yourself email reminders about upcoming diary entries.
+
+i d
+Add a diary entry for the selected date (diary-insert-entry).
+
+i w
+Add a diary entry for the selected day of the week (diary-insert-weekly-entry).
+
+i m
+Add a diary entry for the selected day of the month (diary-insert-monthly-entry).
+
+i y
+Add a diary entry for the selected day of the year (diary-insert-yearly-entry).
+
+i a
+Add an anniversary diary entry for the selected date (diary-insert-anniversary-entry).
+
+i b
+Add a block diary entry for the current region (diary-insert-block-entry).
+
+i c
+Add a cyclic diary entry starting at the date (diary-insert-cyclic-entry).
+* clear the highlight
+one way I find is to use command *M-x hi-lock-mode*
+* set the major mode for file
+Use auto-mode-alist to associate a major mode with file name extension.
+#+BEGIN_SRC elisp
+;; setup files ending in “.js” to open in js2-mode
+(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+#+END_SRC
+http://ergoemacs.org/emacs/emacs_auto-activate_a_major-mode.html
+* mark
+| keys    | function                                           |
+|---------+----------------------------------------------------|
+| C-<SPC> | set a mark                                         |
+| C-x C-x | visual select from current cursor to previous mark |
+* minibuffer
+** close the minibuffer (applicable to ivy)
+C-g
+** quickly clear the minibuffer for input
+C-S-Del
+* custom input mode
+use =C-\= to start choose different input mode.
+for eg, choose *Tex* you can use =\lambda= to
+get λ.
+
+If you don't know how to type a character, you can copy and paste it from
+somewhere else then type *C-u C-x =* to get extended character info for the
+character at point.

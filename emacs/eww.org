@@ -1,0 +1,37 @@
+* open a URL or search the web
+M-x eww
+
+* open file
+- prefix the file name with `file://'
+- M-x eww-open-file
+ 
+* leave browser
+q
+eww-quit
+
+* copy current url
+w
+
+* reload web page
+g
+
+* download url
+d
+
+* go to previous url
+l
+
+* go to next url
+r
+
+* overview browsing history
+H
+
+* bookmark url
+b
+
+* list bookmarks
+B
+
+* open url in external browser
+&

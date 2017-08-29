@@ -1,0 +1,33 @@
+* algebraic
+| key   | meaning                 |
+|-------+-------------------------|
+| ~'~   | enter algebraic formula |
+| ~m a~ | enter algebraic mode    |
+
+| symbol | meaning                   |
+|--------+---------------------------|
+| sqrt   | square root               |
+| ~^ 2~  | squared                   |
+| ~$~    | most recent result        |
+| ~$$~   | second most recent result |
+
+* unit coversion
+https://plus.google.com/+AndrewHyatt/posts/LNi5SJxXXxC
+
+M-x calc
+' 7 oz
+u c g 
+
+(' to enter algebraic mode, so you can type out the units)
+(u c for "unit convert", and g being the target unit which is gram).
+
+result: 198.4466 g
+
+** show the units table
+u v
+
+* other references
+http://blog.everythingtastesbetterwithchilli.com/2013/12/07/andrew-hyatts-emacs-calc-tutorials
+http://nullprogram.com/blog/2009/06/23/
+https://plus.google.com/+AndrewHyatt/posts/ECBKVLjtsok
+https://frozenlock.org/2012/08/13/emacs-unit-converter-for-the-engineer/
