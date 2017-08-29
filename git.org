@@ -1,0 +1,12 @@
+* git log
+** concise output
+--oneline
+** limit number of commits
+-n {number of commits}
+* check if a file is under git control
+git ls-files <file> --error-unmatch
+https://stackoverflow.com/questions/2405305/how-to-tell-if-a-file-is-git-tracked-by-shell-exit-code
+* hide untracked file for git status
+#+BEGIN_SRC bash
+git status -uno
+#+END_SRC

@@ -1,0 +1,9 @@
+various notes I collected along the way..
+
+all notes are written in Emacs Org mode format. 
+github can render it mostly correct but some links
+are broken due to render issue.
+
+[[file:bash/bash.org][bash notes]]
+
+[[file:resources.org][resources link]]
