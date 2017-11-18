@@ -2,7 +2,6 @@
 * useful packages
 https://github.com/benma/visual-regexp.el
 https://github.com/benma/visual-regexp-steroids.el/
-
 * special symbols
 | symbol  | meaning           |
 |---------+-------------------|
@@ -28,7 +27,6 @@ https://github.com/benma/visual-regexp-steroids.el/
 | ~E~  | edit the replacement string                                                       |
 | ~Y~  | replace all in all buffers multi-buffer replacements                              |
 | ~N~  | skip to the next buffer without replacing remaining matches in the current buffer |
-
 * examples
 ** replace lines starts with b with line and TEST
 - query-replace-regexp (C-M-%)
