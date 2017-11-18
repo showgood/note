@@ -1,0 +1,32 @@
+* ssh into virtual guest from host
+setup port forwarding in the network settings.
+
+host ip: 127.0.0.1
+host port: 2222
+guest ip: find out guest ip using ifconfig after logging in
+guest port: 22
+
+then use command like this:
+ssh -X -p 2222 user@127.0.0.1
+
+* shared folder
+the location of shared folder inside guest OS(ubuntu) is:
+#+BEGIN_EXAMPLE
+/media/sf_<share name>
+#+END_EXAMPLE
+
+it should has been auto mounted, if not, do this(assume we want to mount to
+~/share):
+#+BEGIN_SRC bash
+sudo mount -t vboxsf <shared folder name> ~/share/
+#+END_SRC
+
+but first time very likely to encounter error like *permission denied*.
+The root cause is the user doesn't belong to this *vboxsf* group.
+
+so do this:
+#+BEGIN_SRC bash
+sudo adduser <username> vboxsf
+#+END_SRC
+
+but need to *reboot* the guest os before it can take effect.

@@ -180,6 +180,15 @@ C-c + and C-c - conflict with org-mode keybindings..
 (add-hook 'comint-output-filter-functions
    'comint-watch-for-password-prompt)
 * calendar
+** holiday
+| keys | function                                                           | note |
+|------+--------------------------------------------------------------------+------|
+| x    | mark holidays                                                      |      |
+| u    | undo mark holidays                                                 |      |
+| h    | Display holidays for the selected date                             |      |
+| a    | List all holidays for the displayed three months in another window |      |
+| ~>~  | forward one month                                                  |      |
+| ~<~  | backward one month                                                 |      |
 ** diary
 | keys                    | function                                                             | note |
 |-------------------------+----------------------------------------------------------------------+------|
@@ -242,3 +251,5 @@ get λ.
 If you don't know how to type a character, you can copy and paste it from
 somewhere else then type *C-u C-x =* to get extended character info for the
 character at point.
+* grep recursively
+find-grep-dired

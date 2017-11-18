@@ -35,3 +35,16 @@ https://github.com/atgreen/paperless
 
 ** reference
 http://www.catonmat.net/blog/vim-plugins-surround-vim/
+* evil-mc
+multiple cursor works with evil-mode
+
+| keys  | function                   | operation                                             |
+|-------+----------------------------+-------------------------------------------------------|
+| g r m | (evil-mc-make-all-cursors) | Create cursors for all strings that                   |
+|       |                            | match the selected region or the symbol under cursor. |
+|       |                            |                                                       |
+|       |                            |                                                       |
+| g r u | (evil-mc-undo-all-cursors) |                                                       |
+|       |                            |                                                       |
+g r h (evil-mc-make-cursor-here)
+evil-mc-make-and-goto-first-cursor

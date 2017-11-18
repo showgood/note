@@ -1,0 +1,120 @@
+* Attention
+- javascript does NOT support function overload 
+* array
+** check array is empty
+an empty array in JavaScript is *true*.
+The proper way to test empty array is to
+check the *length* attribute:[fn:1]
+
+#+BEGIN_SRC js
+// empty array is true
+var anArray = [];
+if (!anArray) { // wrong way to test for emptiness
+    // this won't happen!
+}
+else {
+    echo ('Empty array is TRUE!');
+}
+
+if (anArray.length == 0) {
+    alert('array is empty');
+}
+else {
+    alert('array is not empty');
+}
+#+END_SRC
+** remove duplicates
+#+BEGIN_SRC js
+  function removeDuplicatesFromArray(arr) {
+    return arr.filter(function(item, pos, self) {
+        return self.indexOf(item) == pos;
+    });
+}
+#+END_SRC
+** deep copy(clone) array
+simple assignment will just do a shallow copy.
+#+BEGIN_SRC js
+var existing = [1, 3, 5];
+var newArray = Array.from(existing);
+#+END_SRC
+** sort a numeric array
+ use ~Array.sort()~, but need to provide custom compare
+ function otherwise result may not be right.
+
+ #+BEGIN_SRC js
+ var nums = [1, 10, 2, 4, 12];
+ var nums2 = [1, 10, 2, 4, 12];
+ nums.sort();
+ console.log("nums:", nums);
+ nums2.sort(function(a, b){return a-b});
+ console.log("nums2:", nums2);
+ #+END_SRC
+
+ #+RESULTS:
+ : nums: [ 1, 10, 12, 2, 4 ]
+ : nums2: [ 1, 2, 4, 10, 12 ]
+ : undefined
+** operations
+| function | description          |
+|----------+----------------------|
+| shift()  | remove first element |
+| pop()    | remove last element  |
+| push()   | add element to array |
+** extend array
+basically extend array a with array b, just like *extend()*
+method for python list.
+
+ #+BEGIN_SRC js
+ var a = [1, 2];
+ var b = [3, 4];
+ console.log('before extend, a:', a);
+ a.push.apply(a, b)
+ console.log('after extend, a:', a);
+ #+END_SRC
+
+ #+RESULTS:
+ : before extend, a: [ 1, 2 ]
+ : after extend, a: [ 1, 2, 3, 4 ]
+ : undefined
+
+ source: http://stackoverflow.com/questions/1374126/how-to-extend-an-existing-javascript-array-with-another-array
+* object
+** get keys of an object
+#+BEGIN_SRC js
+Object.keys(obj)
+#+END_SRC
+** check a property exist inside an object
+#+BEGIN_SRC js
+prop in obj
+#+END_SRC
+** deep copy (clone) an object
+#+BEGIN_SRC js
+var obj = {deps: 'abc'};
+var expect = JSON.parse(JSON.stringify(obj));
+#+END_SRC
+* get the name of a function
+use *name* property
+* generate random number
+use *Math.random()*, this function returns value *[0.0, 1.0)*
+* convert string to integer
+use *parseInt()*
+#+BEGIN_SRC js
+var s='1234';
+var i = parseInt(s)
+#+END_SRC
+
+** handle conversion failure
+when parseInt() fails, return value will be *NaN*.
+there is a special function *isNaN()* to check if return value is NaN,
+only check in that way.
+
+#+BEGIN_SRC js
+var i = parseInt('abc');
+console.log(i == NaN);  // will output false
+console.log(isNaN(i));  // right way
+#+END_SRC
+
+reference: http://stackoverflow.com/questions/2652319/how-do-you-check-that-a-number-is-nan-in-javascript 
+* Footnotes
+
+[fn:1] http://www.xinotes.net/notes/note/1233/

@@ -29,3 +29,33 @@ for eg, I don't want ffip to exclude the pdf file for searching:
 #+BEGIN_SRC elisp
 (pop kill-ring)
 #+END_SRC
+* default-directory [Variable]
+The value of this buffer-local variable is the default directory for the current
+buffer. It should be an absolute directory name; it may start with ‘~’. This
+variable is buffer-local in every buffer.
+
+The value is always a string ending with a slash. 
+#+BEGIN_EXAMPLE
+default-directory ⇒ "/user/lewis/manual/"
+#+END_EXAMPLE
+
+expand-file-name uses the default directory when its second argument is nil.
+
+(start-file-process "grep" (get-buffer-create "*grep*")
+                           "/bin/sh" "-c" "grep -e tramp *"))
+
+(let ((default-directory "/ssh:remote.host:"))
+       (start-file-process "grep" (get-buffer-create "*grep*")
+                           "/bin/sh" "-c" "grep -e tramp *"))
+
+* let                           
+Another form of let is this: (let ((var1 val1) (var2 val2) …) body). Example:
+
+(let ((a 3) (b 4))
+ (+ a b)
+) ; returns 7
+
+* get-buffer-create buffer-or-name [Function]
+This function returns a buffer named buffer-or-name. The buffer returned does not become the current buffer—this function does not change which buffer is current.
+buffer-or-name must be either a string or an existing buffer. If it is a string and a live buffer with that name already exists, get-buffer-create returns that buffer. If no such buffer exists, it creates a new buffer. If buffer-or-name is a buffer instead of a string, it is returned as given, even if it is dead.
+(get-buffer-create "foo") ⇒ #<buffer foo>
