@@ -3,30 +3,53 @@ probably best available for emacs in terms of pdf.
 https://github.com/politza/pdf-tools
 
 it requires some work to make it work on mac, easier on Linux.
-** setup on Mac (for spacemacs)
-first install *zlib* and other dependencies (require homebrew):
+- install the package *pdf-tools* in emacs
+- load it by adding ~(require 'pdf-tools)~ in the init file
+- parepare dependencies for pdf-tools
 #+BEGIN_SRC bash
 brew install poppler automake
 brew install zlib
 #+END_SRC
 
-next is add *pdf-tools* into the spacemacs layers, then re-load emacs.
-
-then find the pdf-tools package in *.emacs.d*, it would sth like this:
-#+BEGIN_SRC bash
-cd /Users/xyz/.emacs.d/elpa/pdf-tools-20170417.150/build/server
-#+END_SRC
-
-then change *PKG_CONFIG_PATH* since zlib is installed at different location (adjust according to zlib version): 
+then change *PKG_CONFIG_PATH* since zlib is installed at different location
+(adjust according to zlib version):
 #+BEGIN_SRC bash
 export PKG_CONFIG_PATH=/usr/local/Cellar/zlib/1.2.11/lib/pkgconfig:/usr/local/lib/pkgconfig:/opt/X11/lib/pkgconfig
 #+END_SRC
+- restart emacs, then run ~pdf-tools-install~ from emacs
 
-finally build pdf-tools:
-#+BEGIN_SRC bash
-make -s
+tested on macOS High Sierra with emacs 26
+
+** more issue
+for some reason, after I restarted emacs and open a pdf file, it appered in a fundamental mode,
+not pdf-view mode.
+
+a bit googling showed that I need to add this to my init file:
+#+BEGIN_SRC elisp
+(pdf-tools-install)
 #+END_SRC
 
-restart emacs and it should work.
+however this triggered a error which I have no idea why..
+but albeit the error, open pdf file works now so I have to put
+this at last so it won't stop other config.
 
-tested on macOS Sierra
+* integrate with org-mode
+out of the box, org mode won't work with pdf tools, need some setup. [fn:1]
+
+- install ~org-pdfview~ package.
+for some reason, doom-emacs can't install it successfully, so I ended up have to
+make a copy of ~org-pdfview.el~ in my config directory, and make sure it loads first
+- then configure it:
+#+BEGIN_SRC elisp
+(eval-after-load 'org '(require 'org-pdfview))
+
+(add-to-list 'org-file-apps
+             '("\\.pdf\\'" . (lambda (file link)
+                                     (org-pdfview-open link))))
+#+END_SRC
+- finally use it in org mode with link like:
+#+BEGIN_EXAMPLE
+[[pdfview:/path/to/myfile.pdf::42][My file Description]]
+#+END_EXAMPLE
+
+[fn:1] https://emacs.stackexchange.com/questions/19686/how-to-use-pdf-tools-pdf-view-mode-in-emacs
