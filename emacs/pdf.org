@@ -34,9 +34,10 @@ but albeit the error, open pdf file works now so I have to put
 this at last so it won't stop other config.
 
 * integrate with org-mode
-out of the box, org mode won't work with pdf tools, need some setup. [fn:1]
+out of the box, org mode won't work with pdf tools, need some setup. [fn:1] [fn:3]
 
-- install ~org-pdfview~ package.
+** org-pdfview
+- install ~org-pdfview~ package [fn:2].
 for some reason, doom-emacs can't install it successfully, so I ended up have to
 make a copy of ~org-pdfview.el~ in my config directory, and make sure it loads first
 - then configure it:
@@ -52,4 +53,21 @@ make a copy of ~org-pdfview.el~ in my config directory, and make sure it loads f
 [[pdfview:/path/to/myfile.pdf::42][My file Description]]
 #+END_EXAMPLE
 
+** pdf-tools-org
+main features are importing and exporting pdf annotations from/to org files
+
+config:
+#+begin_src emacs-lisp
+;;auto save org when pdf file closed
+(add-hook 'after-save-hook
+     (lambda ()
+       (when (eq major-mode 'pdf-view-mode) (pdf-tools-org-export-to-org-mod))))
+#+end_src
+* keybinding and integrate with Evil
+pretty much came from here [fn:5] but I modified it a bit using ~general.el~
+
 [fn:1] https://emacs.stackexchange.com/questions/19686/how-to-use-pdf-tools-pdf-view-mode-in-emacs
+[fn:2] https://github.com/markus1189/org-pdfview/blob/master/org-pdfview.el
+[fn:3] http://tech.memoryimprintstudio.com/pdf-annotation-related-tools/
+[fn:4] https://github.com/pinguim06/pdf-tools-org
+[fn:5] https://github.com/noctuid/evil-guide

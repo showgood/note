@@ -1,0 +1,90 @@
+* supported langugages
+https://www.gnu.org/software/emacs/manual/html_node/org/Languages.html
+| language   | identifier | language       | identifier |
+|------------+------------+----------------+------------|
+| Asymptote  | asymptote  | Awk            | awk        |
+| Emacs Calc | calc       | C              | C          |
+| C++        | C++        | Clojure        | clojure    |
+| CSS        | css        | ditaa          | ditaa      |
+| Graphviz   | dot        | Emacs Lisp     | emacs-lisp |
+| gnuplot    | gnuplot    | Haskell        | haskell    |
+| Java       | java       |                |            |
+| Javascript | js         | LaTeX          | latex      |
+| Ledger     | ledger     | Lisp           | lisp       |
+| Lilypond   | lilypond   | MATLAB         | matlab     |
+| Mscgen     | mscgen     | Objective Caml | ocaml      |
+| Octave     | octave     | Org mode       | org        |
+| Oz         | oz         | Perl           | perl       |
+| Plantuml   | plantuml   | Python         | python     |
+| R          | R          | Ruby           | ruby       |
+| Sass       | sass       | Scheme         | scheme     |
+| GNU Screen | screen     | shell          | sh         |
+| SQL        | sql        | SQLite         | sqlite     |
+
+** additional
+ipython (require ob-ipython package)
+* graphviz (dot)
+- first install graphviz
+#+BEGIN_SRC sh
+brew install graphviz
+#+END_SRC
+then dot can be found at:
+#+BEGIN_EXAMPLE
+/usr/local/bin/dot
+#+END_EXAMPLE
+* lisp block
+needs to do ~M-x slime~ first before execute the lisp block
+in org mode, otherwise will get ~not connected~ error message.
+* org-babel
+** evaluate source code block
+need to enable org-babel to support corresponding language first.
+add this to dotfile:
+
+#+BEGIN_SRC emacs-lisp
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '( (perl . t)         
+      (ruby . t)
+      (sh . t)
+      (python . t)
+      (dot . t)
+      (emacs-lisp . t)   
+      ))
+#+END_SRC
+
+then put cursor somewhere inside source block, then press:
+C-c C-c
+
+** pass flag to c++ compiler
+:flags "-std=c++0x"
+** org babel can't evaluate the code block
+sometimes would see this error when evaluate the code block even when that
+*org-babel-load-languages* has been setup properly:
+#+BEGIN_EXAMPLE
+Evaluation of this python code-blockis disabled.
+#+END_EXAMPLE
+
+turned out one solution is to delete the *elc* file related to org mode:
+#+BEGIN_SRC bash
+cd ~/.emacs.d/elpa/org-plus-contrib-20170502
+rm *.elc
+#+END_SRC
+
+after that, need to recompile the directory (in spacemacs, press 0 in normal mode will give C-u 0):
+#+BEGIN_EXAMPLE
+C-u 0 M-x byte-recompile-directory
+#+END_EXAMPLE
+
+source: https://emacs.stackexchange.com/questions/28441/org-mode-9-unable-to-eval-code-blocks
+** scheme code block
+seems not possible, at least not easily to use mit-scheme to run code.
+since ob-scheme use Geiser which only supports guile and racket.
+
+otherwise could do this:
+#+BEGIN_SRC emacs-lisp
+(setq geiser-default-implementation 'guile)
+#+END_SRC
+* execute all the code blocks in the file
+#+begin_src emacs-lisp
+org-babel-execute-buffer
+#+end_src

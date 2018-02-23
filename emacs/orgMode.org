@@ -1,8 +1,10 @@
+#+SETUPFILE: ~/org/org-minimal-theme.setup
+
 * navigation
 jump to a heading in the org file: *SPC j i*
 * settings
 ** syntax highlight
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
 ;; fontify code in code blocks
 (setq org-src-fontify-natively t)
 #+END_SRC
@@ -69,10 +71,9 @@ would be 2)
 - Then you'd simply need to mark all the desired headlines and bulk archive
 - m (mark for bulk action)
 - B $
-
 * add tag
 C-c C-q
-NOTE: tag can not has -, but can have _.
+NOTE: tag can not has ~-~ but can have ~_~.
 ie. no-return is not valid tag. but no_return is.
 otherwise search by tag won't work
 * superscript / subscript
@@ -93,39 +94,98 @@ https://github.com/abo-abo/org-download
 ** create table
 select the lines (field can be separated with space or comma), then type:
 C-c |
+** sort table
+~C-c ^~
+
+The column currently containing the cursor can be sorted using the C-c ^ key
+combination.
+
+You will be prompted to indicate whether the sort should occur by:
+#+BEGIN_EXAMPLE
+[a]lphabetically - decending
+[A]lphabetically - acending
+[n]umerically - lowest to highest
+[N]umerically - highest to lowest
+[t]ime - oldest to youngest
+[T]ime - youngest to oldest
+#+END_EXAMPLE
 ** formula
-*** get table field info
-put cursor on the field, then press ~C-c ?~
 *** table level formula
 C-c =
-*** field formula
-type formula in that field.
+*** Cell references [fn:3]
+cells are typically of the formula
+#+BEGIN_EXAMPLE
+@row$column
+#+END_EXAMPLE
+
+Row and column references can be toggled on and off with the ~C-c }~ key
+combination.
+
+To get the reference options for the current cell, type ~C-c ?~  [fn:3]
+*** field formula [fn:4]
+type formula in that field, start with ~:=~
 for example:
-:=vsum(C2..C10)
+#+begin_src emacs-lisp
+:=vsum(@2..@10)
+#+end_src
 
-will sum the column 5 from row 2 (row 1 is header) to row 10
+will sum the column from row 2 (row 1 is header) to row 10
 
+| item  | price | another |
+|-------+-------+---------|
+| sss   |   234 |     883 |
+| kkk   |    19 |     181 |
+| total |   253 |    1064 |
+#+TBLFM: @4$2=vsum(@2..@3)::@4$3=vsum(@2..@3)
 *** run formula through whole table:
 put cursor at formula line, then:
-C-c C-c 
-** reference
-http://orgmode.org/worg/org-tutorials/org-spreadsheet-intro.html
+~C-c C-c~
+** functions can be used for formula
+| Function     | Description                               |
+|--------------+-------------------------------------------|
+| vsum(v)      | sum of vector                             |
+| vprod(v)     | product of vector                         |
+| vcount(v)    | length of vector (non blanks)             |
+| vlen(v)      | length of vector (non blanks)             |
+| vmin(v)      | minimum of vector (non blanks)            |
+| vmax(v)      | maximum of vector (non blanks)            |
+| vmean(v)     | mean of vector (non blanks)               |
+| vmedian(v)   | median of vector (non blanks)             |
+| vsdev(v)     | standard deviation of vector (non blanks) |
+| vvar(v)      | variance of vector (non blanks)           |
+| vcov(v1, v2) | covariance of two vector (non blanks)     |
+| vcor(v1, v2) | correlation of two vector (non blanks)    |
+| exp(c)	   | exponential                               |
+| log(c)       | natural logarithm                         |
+| log10(c)     | log base 10                               |
+| sqrt(c)      | square-root                               |
+| vmin(v)      | minimum of vector (non blanks)            |
+| vmax(v)      | maximum of vector (non blanks)            |
+| vmean(v)     | mean of vector (non blanks)               |
+| vmedian(v)   | median of vector (non blanks)             |
+| vsdev(v)     | standard deviation of vector (non blanks) |
+| vvar(v)      | variance of vector (non blanks)           |
+| vcov(v1, v2) | covariance of two vector (non blanks)     |
+| vcor(v1, v2) | correlation of two vector (non blanks)    |
 ** keys
 #+ATTR_HTML:   :border 2 :rules all :frame border
-| keys         | purpose                      | note                  |
-|--------------+------------------------------+-----------------------|
-| Tab          | move to next cell            |                       |
-| S-Tab        | move to previous cell        |                       |
-| M-S-left     | delete column                |                       |
-| M-S-right    | add column                   |                       |
-| M-S-up       | delete row                   |                       |
-| M-S-down     | add row                      |                       |
-| M-left/right | move column to left/right    |                       |
-| M-up/down    | move row to up/down          |                       |
-| C-c -        | add separator row            |                       |
-| S-RET        | copy content from cell above |                       |
-| C-c <SPC>    | clear the cell content       | org-table-blank-field |
-
+| keys         | purpose                        | note                  |
+|--------------+--------------------------------+-----------------------|
+| Tab          | move to next cell              |                       |
+| S-Tab        | move to previous cell          |                       |
+| M-S-left     | delete column                  |                       |
+| M-S-right    | add column                     |                       |
+| M-S-up       | delete row                     |                       |
+| M-S-down     | add row                        |                       |
+| M-left/right | move column to left/right      |                       |
+| M-up/down    | move row to up/down            |                       |
+| C-c -        | add separator row              |                       |
+| S-RET        | copy content from cell above   |                       |
+| C-c <SPC>    | clear the cell content         | org-table-blank-field |
+| C-c ^        | sort table with current column |                       |
+| C-c }        | toggle row/column reference    |                       |
+| C-c {        | debug formula                  |                       |
+| C-c ?        | show current cell reference    |                       |
 * export
 ** prettyify table export
 to prettify the exported table in HTML,Put this right above the table:
@@ -135,10 +195,9 @@ to prettify the exported table in HTML,Put this right above the table:
 #+END_SRC
 *** set the html export attribute for all tables in the org mode file
 set *org-html-table-default-attributes* as below: [fn:1]
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
 (setq org-html-table-default-attributes '(:border "2" :rules "all" :frame "border"))
 #+END_SRC
-
 ** export the properties of headlines
 #+BEGIN_SRC elisep
 (setq org-export-with-properties t)
@@ -147,6 +206,11 @@ set *org-html-table-default-attributes* as below: [fn:1]
 \_ no longer works..
 has to use = to surround the string, something like: ~=no_subscript=~
 ** disable emacs convert underscore(_) to subscript during export
+*** option 1 (global)
+#+BEGIN_SRC emacs-lisp
+(setq org-export-with-sub-superscripts '{})
+#+END_SRC
+*** option 2 (file level)
 put this in the beginning of org file:
 #+BEGIN_SRC org
 #+OPTIONS: ^:nil
@@ -162,55 +226,6 @@ http://orgmode.org/worg/org-8.0.html#sec-8-3
 #+attr_html: :width 100px
 [[~/images/example.jpg]]
 #+END_SRC
-* org-babel
-** evaluate source code block
-need to enable org-babel to support corresponding language first.
-add this to dotfile:
-
-#+BEGIN_SRC emacs-lisp
-  (org-babel-do-load-languages
-   'org-babel-load-languages
-   '( (perl . t)         
-      (ruby . t)
-      (sh . t)
-      (python . t)
-      (dot . t)
-      (emacs-lisp . t)   
-      ))
-#+END_SRC
-
-then put cursor somewhere inside source block, then press:
-C-c C-c
-
-** pass flag to c++ compiler
-:flags "-std=c++0x"
-** org babel can't evaluate the code block
-sometimes would see this error when evaluate the code block even when that
-*org-babel-load-languages* has been setup properly:
-#+BEGIN_EXAMPLE
-Evaluation of this python code-blockis disabled.
-#+END_EXAMPLE
-
-turned out one solution is to delete the *elc* file related to org mode:
-#+BEGIN_SRC bash
-cd ~/.emacs.d/elpa/org-plus-contrib-20170502
-rm *.elc
-#+END_SRC
-
-after that, need to recompile the directory (in spacemacs, press 0 in normal mode will give C-u 0):
-#+BEGIN_EXAMPLE
-C-u 0 M-x byte-recompile-directory
-#+END_EXAMPLE
-
-source: https://emacs.stackexchange.com/questions/28441/org-mode-9-unable-to-eval-code-blocks
-** scheme code block
-seems not possible, at least not easily to use mit-scheme to run code.
-since ob-scheme use Geiser which only supports guile and racket.
-
-otherwise could do this:
-#+BEGIN_SRC elisp
-(setq geiser-default-implementation 'guile)
-#+END_SRC
 * time tracking
 ** keys
 | keys      | description                          |
@@ -225,15 +240,13 @@ put this at beginning of the org file:
 #+BEGIN: clocktable :maxlevel 4 :emphasize nil :scope file :block yesterday
 #+END: clocktable
 #+END_SRC
-
 ** reference
 http://orgmode.org/manual/The-clock-table.html#index-clocktable_002c-dynamic-block-926
 http://irreal.org/blog/?p=5323
-
 * image
 ** scale the inline image in org mode
 - first set this either in init file or org file:
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
 (setq org-image-actual-width nil)
 #+END_SRC
 
@@ -253,7 +266,43 @@ basically can use use a *prefix argument* to achieve it.
 in spacemacs under evil mode, press 1, then followed by *M-x org-publish* would work.
 
 reference: https://stackoverflow.com/questions/21258769/using-emacs-org-mode-how-to-publish-the-unchanged-files-in-a-project
-* Footnotes
+* easy templates
+use ~<x~ followed by ~Tab~ to get expansion.
+~x~ can be anything from table below:
+| key | expansion                             |
+|-----+---------------------------------------|
+| s   | #+BEGIN_SRC ... #+END_SRC             |
+| e   | #+BEGIN_EXAMPLE ... #+END_EXAMPLE     |
+| q   | #+BEGIN_QUOTE ... #+END_QUOTE         |
+| v   | #+BEGIN_VERSE ... #+END_VERSE         |
+| c   | #+BEGIN_CENTER ... #+END_CENTER       |
+| C   | #+BEGIN_COMMENT ... #+END_COMMENT     |
+| l   | #+BEGIN_EXPORT latex ... #+END_EXPORT |
+| L   | #+LATEX:                              |
+| h   | #+BEGIN_EXPORT html ... #+END_EXPORT  |
+| H   | #+HTML:                               |
+| a   | #+BEGIN_EXPORT ascii ... #+END_EXPORT |
+| A   | #+ASCII:                              |
+| i   | #+INDEX: line                         |
+| I   | #+INCLUDE: line                       |
 
+More templates can added by customizing the variable
+~org-structure-template-alist~, whose docstring has additional details.
+* make link works for github
+when github render the org mode file, the normal org mode link
+would be broken if it's referring to the org mode file.
+
+Here's how to make it work (example taken from https://github.com/noctuid/lispyville)
+link needs to be written like this:
+#+BEGIN_EXAMPLE
+(see [[#lispy-settings][Lispy Settings]])
+#+END_EXAMPLE
+
+then the headline referred should have property like this:
+
+#+BEGIN_EXAMPLE
+* Footnotes
 [fn:2] http://orgmode.org/manual/Footnotes.html
 [fn:1] http://orgmode.org/manual/Tables-in-HTML-export.html#Tables-in-HTML-export
+[fn:3] http://www.flutterbys.com.au/stats/tut/tut16.1.html
+[fn:4] http://orgmode.org/worg/org-tutorials/org-spreadsheet-intro.html
